@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>響應式佈局作業 (修復消失 Bug 版)</title>
+    <style>
+        /* 基礎設定 */
+        * { box-sizing: border-box; }
+        body {
+            background-color: #4AA4FF; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: white;
+            width: 100%;
+            max-width: 600px;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px; 
+        }
+
+        /* 頂部綠色區塊 */
+        .box-green {
+            background-color: #A4D342;
+            height: 120px; 
+            border-radius: 4px;
+        }
+
+        /* 中間青色區塊容器 */
+        .teal-wrapper {
+            display: flex;
+            gap: 10px;
+        }
+        .box-teal {
+            background-color: #00BCD4;
+            border-radius: 4px;
+            flex: 1; /* 大螢幕時平分寬度 */
+        }
+
+        /* 底部灰色區塊容器 */
+        .grey-wrapper {
+            display: grid;
+            gap: 10px;
+        }
+        .box-grey {
+            background-color: #E8ECEF;
+            border-radius: 4px;
+        }
+
+        /* =======================================
+           響應式排版邏輯
+           ======================================= */
+
+        /* 狀態 (b)：當螢幕寬度 >= 480px */
+        @media (min-width: 480px) {
+            .teal-wrapper {
+                flex-direction: row; 
+            }
+            .box-teal {
+                height: 200px; /* 大於480時是直立「長的」 */
+            }
+            
+            .grey-wrapper {
+                grid-template-columns: repeat(4, 1fr); 
+            }
+            .box-grey {
+                height: 140px; /* 大於480時是直立「長的」 */
+            }
+        }
+
+        /* 狀態 (a)：當螢幕寬度 < 480px */
+        @media (max-width: 479px) {
+            .teal-wrapper {
+                flex-direction: column; 
+            }
+            .box-teal {
+                height: 80px; 
+                flex: none; /* ★ 修復關鍵：解除平分設定，防止高度塌陷為 0 */
+                width: 100%; /* ★ 確保寬度填滿容器 */
+            }
+            
+            .grey-wrapper {
+                grid-template-columns: repeat(2, 1fr); 
+            }
+            .box-grey {
+                height: 60px; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="box-green"></div>
+        
+        <div class="teal-wrapper">
+            <div class="box-teal"></div>
+            <div class="box-teal"></div>
+            <div class="box-teal"></div>
+        </div>
+
+        <div class="grey-wrapper">
+            <div class="box-grey"></div>
+            <div class="box-grey"></div>
+            <div class="box-grey"></div>
+            <div class="box-grey"></div>
+        </div>
+    </div>
+</body>
+</html>
